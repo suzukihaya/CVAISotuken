@@ -25,7 +25,7 @@ function App() {
     <MyProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Toppage />} />
+          <Route path="/aa" element={<Toppage />} />
           <Route path="/Matchtable" element={<Matchtable />} />
           <Route path="/Matching" element={<Matching />} />
           <Route path="/Matchscore" element={<Matchscore />} />
@@ -43,7 +43,7 @@ function App() {
           <Route path="/profile-st-com-edit" element={<SCEdit />} />
           <Route path="/profile-com" element={<CProfile />} />
           <Route path="/profile-com-edit" element={<CEdit />} />
-          <Route path="/companyinformation" element={<Companyinformation />} />
+          <Route path="/" element={<Companyinformation />} />
         </Routes>
       </Router>
     </MyProvider>

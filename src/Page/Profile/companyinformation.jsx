@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
@@ -24,11 +23,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 import { gray, primarycolor } from "../../const/color";
-import { companies } from "../../const/companies";
+import axios from "axios";
 import "normalize.css";
-const drawerWidth = 240;
 
-const company = companies.find((company) => company.id === 51);
+const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -95,9 +93,11 @@ const menuItems = [
   { text: "プロフィール", icon: <PersonIcon />, link: "/profile-st" },
   { text: "設定", icon: <SettingsIcon />, link: "/Setting", isNavigate: true },
 ];
+
 export function Companyinformation() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [company, setCompany] = useState(null);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -110,6 +110,25 @@ export function Companyinformation() {
       window.location.href = link;
     }
   };
+
+  const fetchCompanyInformation = async () => {
+    try {
+      const requestData = {
+        request: "company_information",
+        id: 45,
+      };
+      console.log("Sending request data:", requestData);
+      const response = await axios.post("/api/", requestData);
+      setCompany(response.data.result); // response.data.result をセット
+      console.log("Response data:", response.data);
+    } catch (error) {
+      console.error("送信失敗: ", error); // エラー詳細を表示
+    }
+  };
+
+  useEffect(() => {
+    fetchCompanyInformation();
+  }, []);
 
   const theme = createTheme({
     components: {
@@ -129,6 +148,10 @@ export function Companyinformation() {
       },
     },
   });
+
+  if (!company) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <ThemeProvider theme={theme}>
